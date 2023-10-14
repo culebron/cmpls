@@ -4,7 +4,7 @@ The crate provides a struct and utilities to store [`LineString`](https://docs.r
 
 ## Encoding a LineString and decoding back
 
-```
+```rust
 use cmpls::{CompLs, ToCompLs, wktls, assert_ls_eq};
 
 // a handy macro to create linestring like WKT
@@ -22,7 +22,7 @@ assert_ls_eq!(ls, cmp.linestring());
 
 You may decide to keep LineStrings in memory, but store them in compact format. The only thing you need is to specify `#[serde(with=...)]` attribute to the field, the rest is done under the hood.
 
-```
+```rust
 use serde::{Serialize, Deserialize};
 use cmpls::{compls_p2, compls_p7};
 
