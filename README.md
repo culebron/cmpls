@@ -1,6 +1,12 @@
 # CompLs, compact line string
 
-The crate provides a struct and utilities to store [`LineString`](https://docs.rs/geo/latest/geo/geometry/struct.LineString.html)s or serialize it in a much compacter format.
+The crate provides lossy compression of GeoRust's [`LineString`](https://docs.rs/geo/latest/geo/geometry/struct.LineString.html)s, via a structure and (de)serializer.
+
+`LineString`s contain coordinates as pairs of `f64`s, hence linestring of N points requires 16\*N bytes. For example, in OSM, a city of 2 mln people, *not* in great detail, contains 27K ways with 215K coordinates (~7.96 coords per linestring). This would take 3.44Mb of storage or RAM.
+
+In this crate, structure `CompLs` stores coordinates as deltas in integer [LEB128](https://en.wikipedia.org/wiki/LEB128) encoding, and instead of 16\*N bytes for `LineString`, `CompLs` uses just 6 + 4\*N bytes. The city mentioned above will need 27K \* (6 + 4 \* 7.96) = ~1.02 Mb for storage, or roughly 3.5 times less.
+
+# Usage
 
 ## Encoding a LineString and decoding back
 
